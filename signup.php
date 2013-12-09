@@ -1,4 +1,7 @@
 <?php 
+/***
+ * Without hidden fields 
+ * ***/
 if(count($_POST) > 0){
 	echo "Form posted";
 	echo '<pre>';
@@ -6,24 +9,12 @@ if(count($_POST) > 0){
 	echo '</pre>';
 }
 
-$defaultVal = "test-default-val";
 ?>
 <script src="js/jquery.1.8.2.min.js"></script>
 <script src="js/valid.js"></script>
 <script type="text/javascript"> 
 		$(document).ready(function() {
-			var hiddenArr = new Array();
-			//hid1 - id of hidden field, gender - id of field who's TEXT needs to go in hidden field          
-			//**to pick text 	~text is used
-			hiddenArr['hid1~text'] = 'gender';	
-			
-			//hid2 - id of hidden field, father_name - id of field who's VALUE needs to go in hidden field    
-			//**to pick value  	~val is used										
-			hiddenArr['hid2~val'] = 'father_name';										
-			
-			//hid3 - id of hidden field, VALUE DEFINED AS A PHP VARIABLE already in hidden field		  
-			//**to pick defualt php value as in hidden field      ~default is used 
-			hiddenArr['hid3~default'] = '';												
+			var hiddenArr = new Array(); 								
 			validateFrm('frmRegisterHome','registerbtn',hiddenArr);
 		});
 </script>
@@ -34,12 +25,7 @@ $defaultVal = "test-default-val";
     input[type="text"], input[type="password"], input[type="email"], textarea{padding: 2px 0px;border: 1px solid #CCCCCC;}
 </style>
 
-<form method="post" action="signup.php" name="frmRegisterHome" id="frmRegisterHome"> 
-	<div>
-		<input type="hidden" name="hid1" id="hid1" value="" />
-		<input type="hidden" name="hid2" id="hid2" value="" />
-		<input type="hidden" name="hid3" id="hid3" value="<?php echo $defaultVal;?>" />
-	</div>
+<form method="post" action="signup.php" name="frmRegisterHome" id="frmRegisterHome">  
 <ul>
 	<li>
 		<span>Your Email ID:</span>
