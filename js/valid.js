@@ -1,6 +1,6 @@
 window.isValid = true;
 window.chckArr = new Array();
-var validateFrm = function (a, b) {
+var validateFrm = function (a, b, ar) {
     $("#" + b).click(function (f) {
         f.preventDefault();
         $("#" + a + " input,select,textarea").each(function (g, k) {
@@ -105,6 +105,20 @@ var validateFrm = function (a, b) {
                 isValid = false
             }
             if (isValid) {
+				for (var ha in ar) {
+					var hArr = ha.split('~');
+					if(hArr[1]=='text'){
+						var vl = $('#'+ar[ha]+' option:selected').text()
+					} 
+					else if(hArr[1]=='val'){
+						var vl = $('#'+ar[ha]).val()
+					}
+					else if(hArr[1]=='default'){
+						var vl = $('#'+hArr[0]).val()
+					}
+					
+					$("#"+hArr[0]).val(vl) 
+				}
                 $("#" + a).submit()
             }
         }
