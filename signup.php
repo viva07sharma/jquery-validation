@@ -1,13 +1,30 @@
 <?php 
 if(count($_POST) > 0){
 	echo "Form posted";
+	echo '<pre>';
+	print_r($_POST);
+	echo '</pre>';
 }
+
+$defaultVal = "test-default-val";
 ?>
 <script src="js/jquery.1.8.2.min.js"></script>
 <script src="js/valid.js"></script>
 <script type="text/javascript"> 
-		$(document).ready(function() { 
-			validateFrm('frmLoginHome','loginbtn');
+		$(document).ready(function() {
+			var hiddenArr = new Array();
+			//hid1 - id of hidden field, gender - id of field who's TEXT needs to go in hidden field          
+			//**to pick text 	~text is used
+			hiddenArr['hid1~text'] = 'gender';	
+			
+			//hid2 - id of hidden field, father_name - id of field who's VALUE needs to go in hidden field    
+			//**to pick value  	~val is used										
+			hiddenArr['hid2~val'] = 'father_name';										
+			
+			//hid3 - id of hidden field, VALUE DEFINED AS A PHP VARIABLE already in hidden field		  
+			//**to pick defualt php value as in hidden field      ~default is used 
+			hiddenArr['hid3~default'] = '';												
+			validateFrm('frmRegisterHome','registerbtn',hiddenArr);
 		});
 </script>
 
@@ -17,15 +34,20 @@ if(count($_POST) > 0){
     input[type="text"], input[type="password"], input[type="email"], textarea{padding: 2px 0px;border: 1px solid #CCCCCC;}
 </style>
 
-<form method="post" action="signup.php" name="frmLoginHome" id="frmLoginHome"> 
+<form method="post" action="signup.php" name="frmRegisterHome" id="frmRegisterHome"> 
+	<div>
+		<input type="hidden" name="hid1" id="hid1" value="" />
+		<input type="hidden" name="hid2" id="hid2" value="" />
+		<input type="hidden" name="hid3" id="hid3" value="<?php echo $defaultVal;?>" />
+	</div>
 <ul>
 	<li>
 		<span>Your Email ID:</span>
-		<label><input name="emailzz" type="text" id="emailzz" class="required email" /></label> 
+		<label><input name="email" type="text" id="email" class="required email" /></label> 
 	</li>
 	<li>
 		<span>Your Password:</span>
-		<label><input type="password" name="opassword" id="opassword" value="" class="required" /></label> 
+		<label><input type="password" name="password" id="password" value="" class="required" /></label> 
 	</li>
 	<li>
 		<span>Your Name:</span>
@@ -51,9 +73,9 @@ if(count($_POST) > 0){
 		<span>Your Gender:</span>
 		<label>
 			<select name="gender" id="gender" class="required">
-				<option vlaue="">Select</option>
-				<option vlaue="M">Male</option>
-				<option vlaue="F">Female</option>
+				<option value="Select">Select</option>
+				<option value="M">Male</option>
+				<option value="F">Female</option>
 			</select>
 		</label> 
 	</li>
@@ -66,7 +88,7 @@ if(count($_POST) > 0){
 		<label><input type="text" name="mother_name" id="mother_name" class="anyone minlen-choice" rel="group2" maxlength="20" minlength="20"/></label> 
 	</li>
 	<li>
-	<a href="#" id="loginbtn">Log In</a> 
+	<a href="#" id="registerbtn">Register</a> 
 	</li>  
 </ul>
 </form>
