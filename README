@@ -14,7 +14,7 @@ Place this script -
 		});
 </script>
 
-Advanced use - for hidden fields
+Advance usage - for hidden fields
 <script type="text/javascript"> 
 		$(document).ready(function() {
 			var hiddenArr = new Array();
