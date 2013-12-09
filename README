@@ -1,0 +1,19 @@
+jquery-validation
+=================
+
+Jquery validation plugin with required, email, digit and all sorts of basic validation.
+
+Include jquery.1.8.2.min.js , valid.js (in js folder) in your page.
+Just include class like "required" or "email"  in your input/textarea/select/radio 
+
+Place this script - 
+<script type="text/javascript"> 
+		$(document).ready(function() { 
+			validateFrm('frmLoginHome','loginbtn');
+		});
+</script>
+
+"frmLoginHome"  is the form id
+"loginbtn" is the id of your form submit button (Can be an anchor button also).
+
+DO NOT KEEP "onsubmit" attribute in form tag !! 
