@@ -43,7 +43,7 @@ $defaultVal = "test-default-val";
 <ul>
 	<li>
 		<span>Your Email ID:</span>
-		<label><input name="email" type="text" id="email" class="required email" /></label> 
+		<label><input name="email_user_actual" type="text" id="email_user_actual" class="required email" /></label> 
 	</li>
 	<li>
 		<span>Your Password:</span>
