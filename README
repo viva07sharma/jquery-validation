@@ -10,7 +10,8 @@ Just include class like "required" or "email"  in your input/textarea/select/rad
 Simple usage - without hidden fields //signup.php 
 <script type="text/javascript"> 
 		$(document).ready(function() { 
-			validateFrm('frmRegisterHome','registerbtn');
+			var hiddenArr = new Array(); 								
+			validateFrm('frmRegisterHome','registerbtn',hiddenArr);
 		});
 </script>
 
