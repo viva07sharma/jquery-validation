@@ -23,11 +23,11 @@ var validateFrm = function (a, b, ar) {
 							var v = 'Select';
 						}		
 						
-						if($(k).attr('name').indexOf("_") != -1){
-							var w = $(k).attr('name').replace("_"," "); 
+						if($(k).attr('id').indexOf("_") != -1){
+							var w = replaceUnderscore($(k).attr('id')) 
 						}
 						else{
-							var w = $(k).attr('name'); 
+							var w = $(k).attr('id'); 
 						}
 						toggleError(k, '1', v+' '+w); 
                         chckArr[$(k).attr("id")] = "1";
@@ -72,7 +72,9 @@ var validateFrm = function (a, b, ar) {
                     $("input[rel=" + $(k).attr("rel") + "], textarea[rel=" + $(k).attr("rel") + "]").each(function (n, i) {
                         if ($(i).attr("id") != $(k).attr("id")) {
                             if (($.trim(h) == "" && $.trim($(i).val()) == "") || ($.trim(h) != "" && $.trim($(i).val()) != "")) {
-                                toggleError(k, "1", "Please choose any one of " + $(k).attr("name").replace("_", " ") + " or " + $(i).attr("name").replace("_", " "));
+								var ch1 = replaceUnderscore($(k).attr('id')) 
+								var ch2 = replaceUnderscore($(i).attr('id')) 
+                                toggleError(k, "1", "Please choose any one of " + ch1 + " or " + ch2)
                                 chckArr[$(k).attr("id")] = "1";
                                 return
                             } else {
@@ -155,8 +157,8 @@ var onpress = function () {
 				var r = 'Select';
 			}		
 			
-			if($(this).attr('name').indexOf("_") != -1){
-				var z = $(this).attr('name').replace("_"," "); 
+			if($(this).attr('id').indexOf("_") != -1){
+				var z = replaceUnderscore($(this).attr('id'))
 			}
 			else{
 				var z = $(this).attr('name'); 
@@ -251,4 +253,13 @@ function isNumberKey(b) {
         }
     }
     return true
-};
+}
+
+function replaceUnderscore(strn){ 
+	var tempRepl = strn
+	while(tempRepl.indexOf("_") != -1 ){
+		 tempRepl = tempRepl.replace("_"," ")  
+	}  
+	
+	return tempRepl
+}
