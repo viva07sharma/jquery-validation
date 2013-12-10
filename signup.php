@@ -29,36 +29,36 @@ if(count($_POST) > 0){
 <ul>
 	<li>
 		<span>Your Email ID:</span>
-		<label><input name="email_user_actual" type="text" id="email_user_actual" class="required email" /></label> 
+		<label><input name="email_user_actual" type="text" id="email_user_actual" class="required email"   title="Please enter email"  /></label> 
 	</li>
 	<li>
 		<span>Your Password:</span>
-		<label><input type="password" name="password" id="password" value="" class="required" /></label> 
+		<label><input type="password" name="password" id="password" value="" class="required" title="Please enter password" /></label> 
 	</li>
 	<li>
 		<span>Your Name:</span>
-		<label><input type="text" name="name" id="name" class="required" /></label> 
+		<label><input type="text" name="name" id="name" class="required"   title="Please enter name"  /></label> 
 	</li>
 	<li>
 		<span>Your Age:</span>
-		<label><input type="text" name="age" id="age" class="required" onkeypress="return isNumberKey(event);" maxlength="3"/></label> 
+		<label><input type="text" name="age" id="age" class="required" onkeypress="return isNumberKey(event);" maxlength="3" title="Please enter age" /></label> 
 	</li>
 	<li>
 		<span>Your Office Address:</span>
-		<label><textarea name="office_address" id="office_address" row="10" columns="10" class="anyone" rel="group1"></textarea></label> 
+		<label><textarea name="office_address" id="office_address" row="10" columns="10" class="anyone" rel="group1" title="Please choose any one of home address or office address"></textarea></label> 
 	</li>
 	<li>
 		<span>Your Home Address:</span>
-		<label><textarea name="home_address" id="home_address" row="10" columns="10" class="anyone" rel="group1"></textarea></label> 
+		<label><textarea name="home_address" id="home_address" row="10" columns="10" class="anyone" rel="group1" title="Please choose any one of office address or home address" ></textarea></label> 
 	</li>
 	<li>
 		<span>Your Phone:</span>
-		<label><input type="text" name="phone" id="phone" class="required minlen maxlen" onkeypress="return isNumberKey(event);" maxlength="10" minlength="10"/></label> 
+		<label><input type="text" name="phone" id="phone" class="required minlen maxlen digits" onkeypress="return isNumberKey(event);" maxlength="10" minlength="10" title="Please enter phone"/></label> 
 	</li>
 	<li>
 		<span>Your Gender:</span>
 		<label>
-			<select name="gender" id="gender" class="required">
+			<select name="gender" id="gender" class="required" title="Please select gender">
 				<option value="Select">Select</option>
 				<option value="M">Male</option>
 				<option value="F">Female</option>
@@ -67,11 +67,11 @@ if(count($_POST) > 0){
 	</li>
 	<li>
 		<span>Your Father Name:</span>
-		<label><input type="text" name="father_name" id="father_name" class="anyone minlen-choice" rel="group2" maxlength="20" minlength="20"/></label> 
+		<label><input type="text" name="father_name" id="father_name" class="anyone minlen-choice" rel="group2" maxlength="20" minlength="20" title="Please choose any one of father name or mother name"/></label> 
 	</li>
 	<li>
 		<span>Your Mother Name:</span>
-		<label><input type="text" name="mother_name" id="mother_name" class="anyone minlen-choice" rel="group2" maxlength="20" minlength="20"/></label> 
+		<label><input type="text" name="mother_name" id="mother_name" class="anyone minlen-choice" rel="group2" maxlength="20" minlength="20" title="Please choose any one of mother name or father name"/></label> 
 	</li>
 	<li>
 	<a href="#" id="registerbtn">Register</a> 
