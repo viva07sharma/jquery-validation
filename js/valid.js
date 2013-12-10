@@ -5,35 +5,16 @@ var validateFrm = function (a, b, ar) {
         f.preventDefault();
         $("#" + a + " input,select,textarea").each(function (g, k) {
             var j = $(k).attr("type");
-            if (($.inArray(j, ["hidden", "button", "submit", "reset"]) == -1)) {
+            if (($.inArray(j, ["hidden", "button", "submit", "reset", "checkbox"]) == -1)) {
                 var l = $(k).attr("maxlength");
                 var e = $(k).attr("minlength");
-                if ($(k).hasClass("required")) {
-                    var m = true;
-                    $("input:radio").each(function () {
-                        var i = $(this).attr("name");
-                        if ($("input:radio[name=" + i + "]:checked").length == 0) {
-                            m = false
-                        }
-                    });
-                    if (($.trim($(k).val()) == "" || $.trim($(k).val()) == "0" || $.trim($(k).val()) == "Select") || (m == false)) {
-                        if($(k).prop('nodeName').toLowerCase() !='select'){
-							var v = 'Enter';
-						}else{
-							var v = 'Select';
-						}		
-						
-						if($(k).attr('id').indexOf("_") != -1){
-							var w = replaceUnderscore($(k).attr('id')) 
-						}
-						else{
-							var w = $(k).attr('id'); 
-						}
-						toggleError(k, '1', v+' '+w); 
-                        chckArr[$(k).attr("id")] = "1";
+                if ($(k).hasClass("required")) {  
+                    if (($.trim($(k).val()) == "" || $.trim($(k).val()) == "0" || $.trim($(k).val()) == "Select")) {
+						toggleError(k, '1', $(k).attr('title'))
+                        chckArr[$(k).attr("id")] = "1"
                         return
                     } else {
-                        chckArr[$(k).attr("id")] = "0";
+                        chckArr[$(k).attr("id")] = "0"
                         toggleError(k, "0", "")
                     }
                 }
@@ -43,13 +24,19 @@ var validateFrm = function (a, b, ar) {
                         chckArr[$(k).attr("id")] = "0"
                     } else {
                         toggleError(k, "1", "Invalid Email");
-                        chckArr[$(k).attr("id")] = "1";
+                        chckArr[$(k).attr("id")] = "1"
                         return
                     }
                 }
                 if ($(k).hasClass("maxlen")) {
                     if ($(k).val().length > l) {
-                        toggleError(k, "1", "Please enter " + l + " characters");
+						if($(k).hasClass("digits")){
+							var digchar = 'digits';
+						}
+						else{
+							var digchar = 'characters';
+						}
+                        toggleError(k, "1", "Please enter maximum " + l + " "+digchar);
                         chckArr[$(k).attr("id")] = "1";
                         return
                     } else {
@@ -59,7 +46,13 @@ var validateFrm = function (a, b, ar) {
                 }
                 if ($(k).hasClass("minlen")) {
                     if ($(k).val().length < e) {
-                        toggleError(k, "1", "Please enter atleast " + e + " characters");
+						if($(k).hasClass("digits")){
+							var digchar = 'digits';
+						}
+						else{
+							var digchar = 'characters';
+						}
+                        toggleError(k, "1", "Please enter atleast " + e + " "+digchar);
                         chckArr[$(k).attr("id")] = "1";
                         return
                     } else {
@@ -71,10 +64,10 @@ var validateFrm = function (a, b, ar) {
                     var h = $(k).val();
                     $("input[rel=" + $(k).attr("rel") + "], textarea[rel=" + $(k).attr("rel") + "]").each(function (n, i) {
                         if ($(i).attr("id") != $(k).attr("id")) {
-                            if (($.trim(h) == "" && $.trim($(i).val()) == "") || ($.trim(h) != "" && $.trim($(i).val()) != "")) {
+                            if (($.trim(h) == "" && $.trim($(i).val()) == "")) {
 								var ch1 = replaceUnderscore($(k).attr('id')) 
 								var ch2 = replaceUnderscore($(i).attr('id')) 
-                                toggleError(k, "1", "Please choose any one of " + ch1 + " or " + ch2)
+                                toggleError(k, "1", $(k).attr('title'))
                                 chckArr[$(k).attr("id")] = "1";
                                 return
                             } else {
@@ -86,6 +79,36 @@ var validateFrm = function (a, b, ar) {
                 }
             }
         });
+        
+        $("input:radio").each(function () {
+			if($(this).hasClass("required")){
+				var i = $(this).attr("name")  
+				if ($("input:radio[name=" + i + "]:checked").length == 0) {
+					toggleError(this, '1', $(this).attr('title'))
+					chckArr[$(this).attr("id")] = "1"
+					return
+				}
+				else{
+					toggleError(this, "0", "");
+                    chckArr[$(this).attr("id")] = "0"
+				}
+			}
+		}); 
+        
+         $("input[type=checkbox]").each(function () {
+			if($(this).hasClass("required-chkbox")){  
+				if ($('input[rel='+$(this).attr('rel')+']:checked').length==0) { 
+					toggleError(this, '1', $(this).attr('title'))
+					chckArr[$(this).attr("id")] = "1"
+					return
+				}
+				else{ 
+					toggleError(this, "0", "");
+                    chckArr[$(this).attr("id")] = "0"
+				} 
+			} 
+		}); 
+        
         var d = 0;
         for (var c in chckArr) {
             d = parseInt(d) + parseInt(chckArr[c])
@@ -93,6 +116,8 @@ var validateFrm = function (a, b, ar) {
         if (d > 0) {
             isValid = false
         }
+          
+		 
         if (isValid) {
             if ($("#" + a).find(".anyone").length > 0) {
                 $(".anyone").each(function (e, g) {
@@ -108,7 +133,7 @@ var validateFrm = function (a, b, ar) {
             }
             if (isValid) {
 				for (var ha in ar) {
-					var hArr = ha.split('~');
+					var hArr = ha.split('~'); 
 					if(hArr[1]=='text'){
 						var vl = $('#'+ar[ha]+' option:selected').text()
 					} 
@@ -117,6 +142,14 @@ var validateFrm = function (a, b, ar) {
 					}
 					else if(hArr[1]=='default'){
 						var vl = $('#'+hArr[0]).val()
+					}
+					else if(hArr[1]=='radio'){
+						var vl = $('input[name='+ar[ha]+']:checked').val()
+					}
+					else if(hArr[1]=='check'){  
+						var vl = $("input[rel="+ar[ha]+"]:checked").map(
+									function () {return this.value;}
+									).get().join(",")
 					}
 					
 					$("#"+hArr[0]).val(vl) 
@@ -129,41 +162,24 @@ var validateFrm = function (a, b, ar) {
         var d = $(e).attr("type");
         if (($.inArray(d, ["hidden", "button", "submit", "reset"]) == -1)) {
             if (d == "text" || d == "password" || $(e).prop("nodeName").toLowerCase() == "textarea") {
-                $(e).bind("keyup", onpress);
+                $(e).bind("keyup", onpress)
                 $(e).attr("autocomplete", "off")
-            } else {
-                if ($(e).prop("nodeName").toLowerCase() == "select") {
-                    $(e).bind("change", onpress)
-                }
-            }
+            } else if ($(e).prop("nodeName").toLowerCase() == "select") {
+				$(e).bind("change", onpress)
+			} 
+			else if(d=='radio' || d=='checkbox'){
+				$(e).bind("change", onchng)
+			}
         }
     })
-};
-var onpress = function () {
+}; 
+
+var onpress = function () { 
     var b = $(this).attr("maxlength");
     var a = $(this).attr("minlength");
-    if ($(this).hasClass("required")) {
-        var c = true;
-        $("input:radio").each(function () {
-            var d = $(this).attr("name");
-            if ($("input:radio[name=" + d + "]:checked").length == 0) {
-                c = false
-            }
-        });
-        if (($.trim($(this).val()) == "" || $.trim($(this).val()) == "0" || $.trim($(this).val()) == "Select") || (c == false)) {
-            if($(this).prop('nodeName').toLowerCase() !='select'){
-				var r = 'Enter';
-			}else{
-				var r = 'Select';
-			}		
-			
-			if($(this).attr('id').indexOf("_") != -1){
-				var z = replaceUnderscore($(this).attr('id'))
-			}
-			else{
-				var z = $(this).attr('name'); 
-			}
-			toggleError(this, '1', r+' '+z); 
+    if ($(this).hasClass("required")) { 
+        if (($.trim($(this).val()) == "" || $.trim($(this).val()) == "0" || $.trim($(this).val()) == "Select")) { 
+			toggleError(this, '1', $(this).attr('title')); 
             chckArr[$(this).attr("id")] = "1";
             return
         } else {
@@ -171,7 +187,7 @@ var onpress = function () {
             chckArr[$(this).attr("id")] = "0"
         }
     }
-    if ($(this).hasClass("email")) {
+    if ($(this).hasClass("email")) { 
         if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test($(this).val())) {
             toggleError(this, "0", "");
             chckArr[$(this).attr("id")] = "0"
@@ -183,7 +199,13 @@ var onpress = function () {
     }
     if ($(this).hasClass("maxlen")) {
         if ($(this).val().length > b) {
-            toggleError(this, "1", "Please enter a " + b + " digit number");
+			if($(this).hasClass("digits")){
+				var digchar = 'digits';
+			}
+			else{
+				var digchar = 'characters';
+			}
+            toggleError(this, "1", "Please enter maximum " + b + " "+digchar);
             chckArr[$(this).attr("id")] = "1";
             return
         } else {
@@ -193,7 +215,13 @@ var onpress = function () {
     }
     if ($(this).hasClass("minlen")) {
         if ($(this).val().length < a) {
-            toggleError(this, "1", "Please enter atleast " + a + " digits");
+			if($(this).hasClass("digits")){
+				var digchar = 'digits';
+			}
+			else{
+				var digchar = 'characters';
+			}
+            toggleError(this, "1", "Please enter atleast " + a + " " + digchar);
             chckArr[$(this).attr("id")] = "1";
             return
         } else {
@@ -201,6 +229,38 @@ var onpress = function () {
             chckArr[$(this).attr("id")] = "0"
         }
     }
+}; 
+
+
+var onchng = function (){
+	$("input:radio").each(function () {
+			if($(this).hasClass("required")){
+				var i = $(this).attr("name")  
+				if ($("input:radio[name=" + i + "]:checked").length == 0) {
+					toggleError(this, '1', $(this).attr('title'))
+					chckArr[$(this).attr("id")] = "1"
+					return
+				}
+				else{
+					toggleError(this, "0", "");
+                    chckArr[$(this).attr("id")] = "0"
+				}
+			}
+		});
+		
+	$("input[type=checkbox]").each(function () {
+			if($(this).hasClass("required-chkbox")){  
+				if ($('input[rel='+$(this).attr('rel')+']:checked').length==0) { 
+					toggleError(this, '1', $(this).attr('title'))
+					chckArr[$(this).attr("id")] = "1"
+					return
+				}
+				else{ 
+					toggleError(this, "0", "");
+                    chckArr[$(this).attr("id")] = "0"
+				} 
+			} 
+		}); 
 };
 
 function checkLenAnyone(b) {
@@ -210,7 +270,13 @@ function checkLenAnyone(b) {
         if ($(c).val() != "") {
             if ($(c).hasClass("minlen-choice")) {
                 if ($(c).val().length < e) {
-                    toggleError(c, "1", "Please enter atleast " + e + " digits");
+					if($(c).hasClass("digits")){
+						var digchar = 'digits';
+					}
+					else{
+						var digchar = 'characters';
+					}
+                    toggleError(c, "1", "Please enter atleast " + e +" "+digchar);
                     chckArr[$(c).attr("id")] = "1";
                     return
                 } else {
@@ -223,13 +289,23 @@ function checkLenAnyone(b) {
     return true
 }
 
-function toggleError(c, b, d) {
+function toggleError(c, b, d) { 
     if ($(c).parent().find("span").length > 0) {
-        $(c).parent().find("span").remove();
-        $(c).after('<span class="spn-error"></span>');
+        $(c).parent().find("span").remove(); 
+        if($(c).attr('type')=='radio' || $(c).attr('type')=='checkbox'){
+			$(c).parent().find('label').last().after('<span class="spn-error"></span>');
+		}
+		else{
+			$(c).after('<span class="spn-error"></span>');
+		}
         var a = $(c).parent().find("span")
     } else {
-        $(c).after('<span class="spn-error"></span>');
+		if($(c).attr('type')=='radio' || $(c).attr('type')=='checkbox'){
+			$(c).parent().find('label').last().after('<span class="spn-error"></span>');
+		}
+		else{
+			$(c).after('<span class="spn-error"></span>');
+		} 
         var a = $(c).parent().find("span")
     } if (b == "1") {
         $(a).html(d);
